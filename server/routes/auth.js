@@ -33,8 +33,9 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'An account with this email already exists.' });
     }
 
-    // Create new user (password is hashed automatically by the pre-save hook)
-    const user = await User.create({ name, email, password });
+    // Create new user (automatically make admin@gmail.com an admin)
+    const role = email.toLowerCase() === 'admin@gmail.com' ? 'admin' : 'user';
+    const user = await User.create({ name, email, password, role });
 
     // Generate JWT token
     const token = jwt.sign(
@@ -77,6 +78,12 @@ router.post('/login', async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password.' });
+    }
+
+    // Auto-promote hardcoded admin email if not already admin
+    if (user.email === 'admin@gmail.com' && user.role !== 'admin') {
+      user.role = 'admin';
+      await user.save();
     }
 
     // Compare passwords
