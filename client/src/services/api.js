@@ -8,9 +8,19 @@
 
 import axios from 'axios';
 
+// Helper to normalize the API URL and ensure it ends with /api
+const getBaseURL = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (!envUrl) return '/api';
+  
+  // Remove trailing slashes and ensure it ends with /api
+  const cleanedUrl = envUrl.replace(/\/+$/, '');
+  return cleanedUrl.endsWith('/api') ? cleanedUrl : `${cleanedUrl}/api`;
+};
+
 // Create a pre-configured Axios instance
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: getBaseURL(),
   headers: {
     'Content-Type': 'application/json',
   },
