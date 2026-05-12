@@ -33,6 +33,7 @@ export default function Register() {
       await register(name, email, password);
       navigate('/dashboard');
     } catch (err) {
+      console.error('Registration error detail:', err);
       setError(err.response?.data?.message || 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
