@@ -8,8 +8,8 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
-export default function ProtectedRoute({ children }) {
-  const { isAuthenticated, loading } = useAuth();
+export default function ProtectedRoute({ children, adminOnly = false }) {
+  const { user, isAuthenticated, loading } = useAuth();
 
   // Show loading spinner while checking auth state
   if (loading) {
@@ -26,6 +26,11 @@ export default function ProtectedRoute({ children }) {
   // Redirect to login if not authenticated
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
+  }
+
+  // Redirect to dashboard if admin-only route and user is not admin
+  if (adminOnly && user?.role !== 'admin' && user?.email !== 'admin@gmail.com') {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return children;

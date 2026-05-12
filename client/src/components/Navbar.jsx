@@ -60,6 +60,11 @@ export default function Navbar() {
                 <Link to="/interview/select" className={navLinkClass('/interview/select')} id="nav-start-interview">
                   Start Interview
                 </Link>
+                {(user?.role === 'admin' || user?.email === 'admin@gmail.com') && (
+                  <Link to="/admin" className={navLinkClass('/admin')} id="nav-admin">
+                    Admin
+                  </Link>
+                )}
                 <div className="w-px h-6 bg-gray-200 dark:bg-gray-700 mx-2" />
                 <ThemeToggle />
                 <div className="flex items-center gap-3 ml-2">
@@ -134,6 +139,12 @@ export default function Navbar() {
                   className="block px-4 py-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-surface-700 transition-colors">
                   🎯 Start Interview
                 </Link>
+                {(user?.role === 'admin' || user?.email === 'admin@gmail.com') && (
+                  <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)}
+                    className="block px-4 py-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-surface-700 transition-colors">
+                    🛡️ Admin Panel
+                  </Link>
+                )}
                 <hr className="border-gray-200 dark:border-gray-700 my-2" />
                 <button onClick={handleLogout}
                   className="w-full text-left px-4 py-3 rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">

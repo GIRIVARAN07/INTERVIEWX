@@ -16,6 +16,7 @@ import Dashboard from './pages/Dashboard';
 import InterviewSelect from './pages/InterviewSelect';
 import Interview from './pages/Interview';
 import Results from './pages/Results';
+import AdminDashboard from './pages/AdminDashboard';
 
 export default function App() {
   const { loading } = useAuth();
@@ -48,6 +49,7 @@ export default function App() {
         <Route path="/interview/select" element={<ProtectedRoute><InterviewSelect /></ProtectedRoute>} />
         <Route path="/interview" element={<ProtectedRoute><Interview /></ProtectedRoute>} />
         <Route path="/results/:id" element={<ProtectedRoute><Results /></ProtectedRoute>} />
+        <Route path="/admin" element={<ProtectedRoute adminOnly={true}><AdminDashboard /></ProtectedRoute>} />
 
         {/* Catch-all redirect */}
         <Route path="*" element={<Navigate to="/" replace />} />

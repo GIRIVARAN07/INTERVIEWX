@@ -24,6 +24,7 @@ dotenv.config();
 const authRoutes = require('./routes/auth');
 const questionRoutes = require('./routes/questions');
 const attemptRoutes = require('./routes/attempts');
+const adminRoutes = require('./routes/admin');
 
 // Initialize Express app
 const app = express();
