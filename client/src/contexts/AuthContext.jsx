@@ -13,25 +13,32 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('interviewx-token'));
+  const [token, setToken] = useState(() => localStorage.getItem('interviewx-token'));
   const [loading, setLoading] = useState(true);
 
   // On mount, verify the stored token and load user data
   useEffect(() => {
     const loadUser = async () => {
-      if (token) {
-        try {
-          const response = await api.get('/auth/me');
-          setUser(response.data.user);
-        } catch (error) {
-          // Token is invalid or expired — clear it
-          console.error('Auto-login failed:', error);
-          localStorage.removeItem('interviewx-token');
-          setToken(null);
-          setUser(null);
-        }
+      setLoading(true);
+
+      if (!token) {
+        setUser(null);
+        setLoading(false);
+        return;
       }
-      setLoading(false);
+
+      try {
+        const response = await api.get('/auth/me');
+        setUser(response.data.user);
+      } catch (error) {
+        // Token is invalid or expired — clear it
+        console.error('Auto-login failed:', error);
+        localStorage.removeItem('interviewx-token');
+        setToken(null);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
     };
 
     loadUser();
